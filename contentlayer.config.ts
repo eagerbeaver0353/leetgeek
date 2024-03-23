@@ -1,4 +1,9 @@
-import { defineDocumentType, ComputedFields, makeSource } from 'contentlayer/source-files'
+import {
+  defineDocumentType,
+  ComputedFields,
+  makeSource,
+  defineNestedType,
+} from 'contentlayer/source-files'
 import { writeFileSync } from 'fs'
 import readingTime from 'reading-time'
 import { slug } from 'github-slugger'
@@ -128,9 +133,90 @@ export const Authors = defineDocumentType(() => ({
   computedFields,
 }))
 
+export const Icon = defineNestedType(() => ({
+  name: 'Icon',
+  fields: {
+    contacts: { type: 'json', required: true },
+    socials: { type: 'json', required: true },
+    skills: { type: 'json', required: true },
+    others: { type: 'json', required: true },
+  },
+}))
+
+const Skill = defineDocumentType(() => ({
+  name: 'Skill',
+  fields: {
+    name: { type: 'string', required: true },
+    items: { type: 'list', of: { type: 'string' }, default: [] },
+    description: { type: 'string', default: '' },
+  },
+}))
+
+const Experience = defineNestedType(() => ({
+  name: 'Experience',
+  fields: {
+    role: { type: 'string', required: true },
+    details: { type: 'list', of: { type: 'string' }, default: [] },
+    skillsUsed: { type: 'list', of: { type: 'string', default: [] } },
+    employer: { type: 'string', required: true },
+    date: { type: 'string' },
+    location: { type: 'string' },
+  },
+}))
+
+const Testimonial = defineNestedType(() => ({
+  name: 'Testimonial',
+  fields: {
+    title: { type: 'string', required: true },
+    subtitle: { type: 'string', default: '' },
+    description: { type: 'string', default: '' },
+    right_thumbnail: { type: 'string' },
+    left_thumbnail: { type: 'string' },
+    list: {
+      type: 'list',
+      of: defineDocumentType(() => ({
+        name: 'TestimonialAuthor',
+        fields: {
+          author: { type: 'string', required: true },
+          avatar: { type: 'string' },
+          profession: { type: 'string', required: true },
+          content: { type: 'string', required: true },
+        },
+      })),
+    },
+  },
+}))
+
+export const User = defineDocumentType(() => ({
+  name: 'User',
+  filePathPattern: 'users/**/*.md',
+  contentType: 'mdx',
+  fields: {
+    name: { type: 'string', required: true },
+    photo: { type: 'string', required: true },
+    role: { type: 'string', required: true },
+    summary: { type: 'string', required: true },
+    contacts: { type: 'json', required: true, default: {} },
+    skills: { type: 'json', default: {} },
+    experiences: { type: 'list', of: Experience, default: [] },
+    projects: { type: 'list', of: { type: 'string' }, default: [] },
+    testimonials: { type: 'nested', of: Testimonial, required: true },
+  },
+}))
+
+export const Metadata = defineDocumentType(() => ({
+  name: 'Metadata',
+  filePathPattern: 'metadata.md',
+  contentType: 'mdx',
+  fields: {
+    userLabels: { type: 'json', required: true },
+    icons: { type: 'nested', of: Icon, required: true },
+  },
+}))
+
 export default makeSource({
   contentDirPath: 'data',
-  documentTypes: [Blog, Authors],
+  documentTypes: [Blog, Authors, User, Metadata, Skill],
   mdx: {
     cwd: process.cwd(),
     remarkPlugins: [

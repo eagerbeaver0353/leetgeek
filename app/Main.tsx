@@ -1,5 +1,5 @@
-import Link from '@/components/Link'
-import Tag from '@/components/Tag'
+import Link from '@/components/small/Link'
+import Tag from '@/components/small/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import { formatDate } from 'pliny/utils/formatDate'
 import NewsletterForm from 'pliny/ui/NewsletterForm'

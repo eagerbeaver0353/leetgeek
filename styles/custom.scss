@@ -1,0 +1,26 @@
+.form-control {
+  display: block;
+  height: 3.5rem;
+  width: 100%;
+  border-radius: 0.375rem;
+  border-width: 2px;
+  border-style: solid;
+  border-color: #fe60191a;
+  border-left-color: #fe601980;
+  background-color: #fe60190d;
+  padding: 1.25rem;
+  transition-duration: 0.3s;
+}
+
+// add the code bellow
+@layer utilities {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}

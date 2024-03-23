@@ -1,10 +1,10 @@
 import siteMetadata from '@/data/siteMetadata'
 import headerNavLinks from '@/data/headerNavLinks'
 import Logo from '@/data/logo.svg'
-import Link from './Link'
-import MobileNav from './MobileNav'
-import ThemeSwitch from './ThemeSwitch'
-import SearchButton from './SearchButton'
+import Link from './small/Link'
+import MobileNav from './small/MobileNav'
+import ThemeSwitch from './small/ThemeSwitch'
+import SearchButton from './small/SearchButton'
 
 const Header = () => {
   return (
